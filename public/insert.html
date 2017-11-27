@@ -1,0 +1,62 @@
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.5.1/qs.js"></script>
+<div id="messageApp">
+
+from:<input type=text v-model="fromID">
+<br>
+to: <input type=text v-model="toID">
+<br>
+title: <input type=text v-model="title">
+<br>
+message: <input type=text v-model="message">
+<input type=submit v-on:click="sendMessage">
+
+<ul>
+<ol v-for="row in rows">{{row}}</ol>
+</ul>
+</div>
+<script>
+var app5 = new Vue({
+	el: '#messageApp',
+	data: {
+		rows : {},
+		fromID : '',
+		toID: '',
+		message: '',
+		title:'',
+	},
+	created: function(){
+		//this.getMessageList();
+	},
+	methods: {
+		// getMessageList : function (){
+		// 	axios.get('/test/message/list')
+		// 		.then(function(response){
+		// 			this.rows = response.data.list;
+		// 		}
+		// 		.bind(this))
+		// 		.catch(function(error){
+		// 			console.log(error);
+		// 		});
+		// }, 
+		sendMessage: function(){
+			axios.get('http://localhost:3000/insert', {
+				params:{
+					fromID: this.fromID, 
+					toID: this.toID, 
+					message: this.message,
+					title:this.title,
+				}
+			})
+			.then(function(response){
+				//Form Reload
+			})
+			.catch(function(error){
+				console.log(error);
+			})
+		}
+	}
+});
+</script>

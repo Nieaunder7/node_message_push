@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+        <script src="https://unpkg.com/vue@2.5.8/dist/vue.js"></script>
+    </head>
+    <body>
+        <div id="socTest">
+            현재메시지 {{message_cnt}}
+        </div>
+        <script>
+            var app = new Vue({
+                el: '#socTest',
+                data: {
+                    socket: {}, 
+                    message_cnt : 0
+                }, 
+                created: function(){
+                    var url = 'http://localhost:3000';
+                    socket = io.connect(url,  {forceNew:true});
+                    socket.on('connect', function(){
+                        console.log('웹 소켓 서버에 연결되었습니다.');
+                        socket.on('message_count', function(mcount){
+                            console.log(mcount);
+                            //이거 왜 이렇게 해서 값을 읽어와야 되나..???
+                            app.message_cnt = mcount.recordset[0][""];
+                        });
+                    });
+                },
+            });
+        </script>
+    </body>
+</html>
